@@ -1,0 +1,6 @@
+---
+startWeigth: 100
+maxOrganismOnArea: 2
+currentWeigth: 90
+health: 90
+chanceToReproduce: 100

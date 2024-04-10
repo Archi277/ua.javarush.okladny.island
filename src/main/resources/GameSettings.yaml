@@ -1,0 +1,23 @@
+---
+IslandSize: 10
+residentsProperties:
+  "Wolf" : 4
+  "Bear" : 0
+  "Fox" : 5
+  "Boa" : 0
+  "Eagle" : 5
+
+  "Deer" : 5
+  "Horse" : 1
+  "Duck" : 10
+  "Rabbit" : 20
+  "Goat" : 10
+  "Mouse": 20
+  "Caterpillar": 50
+  "Buffalo" : 1
+  "Boar": 15
+  "Sheep": 15
+
+  "Grass" : 15
+
+

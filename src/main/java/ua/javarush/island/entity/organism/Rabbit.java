@@ -1,4 +1,4 @@
-package ua.javarush.island.entity.animal.herbivore;
+package ua.javarush.island.entity.organism;
 
 
 public class Rabbit extends Herbivore {

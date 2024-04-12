@@ -1,29 +1,34 @@
-package ua.javarush.island.entity.animal.herbivore;
+package ua.javarush.island.entity.organism;
 
+import ua.javarush.island.entity.Animal;
 import ua.javarush.island.entity.Organism;
-import ua.javarush.island.entity.animal.Animal;
+import ua.javarush.island.gameloader.GameLoader;
 
-import java.util.SplittableRandom;
-
-public class Herbivore extends Animal {
+public class Predator extends Animal {
     @Override
     public void eat() {
         boolean isFoodFind = false;
         for (Organism organism : currentArea.getResidents()) {
-
             String name = organism.getClass().getSimpleName();
 
 
             if (listOfEatableOrganism.containsKey(name)) {
-                isFoodFind = true;
                 System.out.println(this.getClass().getSimpleName() + " find " + name);
 
                 if (getChanceToEat(name)) {
+                    isFoodFind = true;
                     System.out.println(this.getClass().getSimpleName() + "eat" + name);
 
-                    if (organism.getCurrentWeigth() > foodWeigthForSaturation) {
-                        organism.setCurrentWeigth(organism.getCurrentWeigth()- foodWeigthForSaturation);
-                        organism.setHealth(organism.getCurrentWeigth());
+                    if (organism.health != 0) {
+                        if (organism.getStartWeigth() > foodWeigthForSaturation) {
+                            currentFoodWeigthForSaturation = foodWeigthForSaturation;
+                            organism.setHealth(0);
+                            break;
+
+                        } else if (organism.getStartWeigth() < foodWeigthForSaturation) {
+                            currentFoodWeigthForSaturation += organism.getStartWeigth();
+                            organism.setHealth(0);
+                        }
                     }
                 }
             }
@@ -48,12 +53,13 @@ public class Herbivore extends Animal {
                                 if (getReproduceProbability()) {
                                     this.isHavePair =true;
                                     organism.isHavePair = true;
+
                                     System.out.println(thisName+ " " + this.getID() + " find  pair to reproduce " + organismName + organism.getID());
 
                                     organism.setNumberOfReproduceTime(organism.getNumberOfReproduceTime() - 1);
                                     this.setNumberOfReproduceTime(getNumberOfReproduceTime() - 1);
 
-                                    getCurrentArea().listToCreateOrganism.merge("ua.javarush.island.entity.animal.herbivore."+ thisName, 1, Integer::sum);
+                                    getCurrentArea().listToCreateOrganism.merge(GameLoader.PATH_TO_ORGANISM_FOLDER + thisName, 1, Integer::sum);
                                 }
                             }
                         }

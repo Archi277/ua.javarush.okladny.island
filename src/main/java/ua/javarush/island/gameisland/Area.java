@@ -1,21 +1,19 @@
 package ua.javarush.island.gameisland;
 
+import ua.javarush.island.entity.Animal;
 import ua.javarush.island.entity.Organism;
+import ua.javarush.island.entity.Plant;
 import ua.javarush.island.gameloader.GameLoader;
+import ua.javarush.island.gameloader.GameStatus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
-public class Area {
+public class Area  {
     private int coordinateX;
     private int coordinateY;
     private List<Organism> residents = new ArrayList<>();
     public Map<String, Integer> listToCreateOrganism = new HashMap<>();
-
-    public Map<String, Integer> statisticOfResidents = new HashMap<>();
 
     public int getCoordinateX() {
         return coordinateX;
@@ -34,19 +32,45 @@ public class Area {
         this.coordinateY = coordinateY;
     }
 
+
+
     @Override
     public String toString() {
 
         if (residents.size() != 0) {
             String result = "";
             for (Organism organism : residents) {
-                result += organism.toString();
+                if(organism != null) result += organism.toString();
             }
             return result;
         } else return "[" + coordinateX + "," + coordinateY + "]  ";
     }
+    public void feedOrganismOnArea(){
+        for(Organism residentsOrganism : residents){
+            if (residentsOrganism instanceof Animal) {
+                Animal animal = (Animal) residentsOrganism;
+                animal.eat();
+            }
+        }
+    }
+    public void reproduceOrganismOnArea(){
+        for(Organism residentsOrganism : residents){
+            residentsOrganism.reproduce();
+        }
+    }
 
-    public void createNewOrganism() {
+    public void moveOrganismOnArea(){
+
+        List<Organism> residentsCopy = List.copyOf(residents);
+        for(Organism residentsOrganism : residentsCopy){
+            if (residentsOrganism instanceof Animal) {
+                Animal animal = (Animal) residentsOrganism;
+                animal.move();
+            }
+        }
+    }
+
+    public void createNewOrganismOnArea() {
         for (Map.Entry<String, Integer> set : listToCreateOrganism.entrySet()) {
             String classOrganismName = set.getKey();
             int quantityOrganism = set.getValue();
@@ -56,16 +80,26 @@ public class Area {
         }
         listToCreateOrganism.clear();
     }
+    public  void checkAliveAnimalsOnArea() {
+        Iterator<Organism> organismIterator = residents.iterator();
+        while (organismIterator.hasNext()) {
 
-    public void refreshStatisticOfResidents() {
-        for (Organism organism : residents) {
-            statisticOfResidents.merge(organism.getClass().getTypeName(), 1, Integer::sum);
+            Organism nextOrganism = organismIterator.next();
+            if (nextOrganism instanceof Animal) {
+                Animal animal = (Animal) nextOrganism;
+                if (animal.getHealth() < 10 ) {
+                    GameStatus.aliveOrganism.remove(animal);
+                    organismIterator.remove();
+                }
+
+            }
+            if (nextOrganism instanceof Plant) {
+                if (nextOrganism.getCurrentWeigth() <= nextOrganism.getStartWeigth() / 10) {
+                    GameStatus.aliveOrganism.remove(nextOrganism);
+                    organismIterator.remove();
+                }
+            }
         }
-        if(!statisticOfResidents.isEmpty()) {
-            System.out.println(statisticOfResidents);
-            System.out.println("["+getCoordinateX()+"]["+getCoordinateY()+"]___________________________________________");
-        }
-        statisticOfResidents.clear();
     }
 
     public int getNumberAnimalOfThisClass(Organism organism){

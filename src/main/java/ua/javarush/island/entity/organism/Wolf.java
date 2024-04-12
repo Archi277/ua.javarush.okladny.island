@@ -1,4 +1,4 @@
-package ua.javarush.island.entity.animal.predator;
+package ua.javarush.island.entity.organism;
 
 public class Wolf extends Predator {
 

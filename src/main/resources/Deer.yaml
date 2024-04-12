@@ -1,0 +1,11 @@
+isPredator : false
+maxOrganismOnArea: 20
+chanceToReproduce: 30
+numberOfReproduceTime: 1
+speedOfMove: 1
+foodWeigthForSaturation: 50
+startWeigth: 300
+currentWeigth: 300
+health: 100
+listOfEatableOrganism:
+  "Grass" : 100

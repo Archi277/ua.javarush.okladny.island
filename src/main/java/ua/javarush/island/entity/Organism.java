@@ -7,6 +7,7 @@ public abstract class Organism {
     private String ID;
     public Area currentArea;
     public boolean isHavePair = false;
+
     public int health;
     private int startWeigth;
     private int currentWeigth;
@@ -15,6 +16,8 @@ public abstract class Organism {
     public int chanceToReproduce;
     public abstract void play();
     public  abstract  void reproduce();
+
+
 
     public String getID() {
         return ID;

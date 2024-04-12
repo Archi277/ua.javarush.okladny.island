@@ -1,4 +1,4 @@
-package ua.javarush.island.entity.animal;
+package ua.javarush.island.entity;
 
 import ua.javarush.island.entity.Organism;
 import ua.javarush.island.gameisland.Area;
@@ -7,7 +7,6 @@ import ua.javarush.island.gameisland.Island;
 
 import java.util.Map;
 import java.util.SplittableRandom;
-import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Animal extends Organism {
 
@@ -66,9 +65,12 @@ public abstract class Animal extends Organism {
 
         currentArea = Island.areas[newCoordinateX][newCoordinateY];
         currentArea.getResidents().add(this);
-        //TODO add chekinck max animal on area
+        //TODO add check max animal on area
 
     }
+
+
+
 
     @Override
     public void play() {

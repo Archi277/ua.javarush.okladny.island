@@ -29,6 +29,7 @@ public class Main {
         final long startTime = System.currentTimeMillis();
         for (int i=0;i<50;i++) {
             System.out.println("Day #: "  + i);
+            GameStatus.collectStatisticOfAnimals();
             gameLoader.showAreas();
 
             executorService.invokeAll(listOfTaskCreator.taskReproduceList);
@@ -38,7 +39,7 @@ public class Main {
             executorService.invokeAll(listOfTaskCreator.taskChecksList);
         }
 
-        GameStatus.collectStatisticOfAnimals();
+
         final long endTime = System.currentTimeMillis();
         System.out.println("Total execution time: " + (endTime - startTime));
 

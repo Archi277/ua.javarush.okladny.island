@@ -20,27 +20,15 @@ public class Main {
         ListOfTaskCreator listOfTaskCreator = new ListOfTaskCreator();
 
         methodWithExetorService(gameLoader, listOfTaskCreator);
-
-
-//        final long startTime = System.currentTimeMillis();
-//        for (int i = 0; i < 50; i++) {
-//            //methodBasedOnList(gameLoader, i);
-//
-//            methodBasedOnArea(gameLoader, i);
-//            //Thread.sleep(500);
-//        }
-//        final long endTime = System.currentTimeMillis();
-//        System.out.println("Total execution time: " + (endTime - startTime));
-
-
     }
+
 
     private static void methodWithExetorService(GameLoader gameLoader, ListOfTaskCreator listOfTaskCreator) throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(8);
 
         final long startTime = System.currentTimeMillis();
         for (int i=0;i<50;i++) {
-
+            System.out.println("Day #: "  + i);
             gameLoader.showAreas();
 
             executorService.invokeAll(listOfTaskCreator.taskReproduceList);
@@ -110,3 +98,14 @@ public class Main {
 
 
 }
+
+//        final long startTime = System.currentTimeMillis();
+//        for (int i = 0; i < 50; i++) {
+//            //methodBasedOnList(gameLoader, i);
+//
+//            methodBasedOnArea(gameLoader, i);
+//            //Thread.sleep(500);
+//        }
+//        final long endTime = System.currentTimeMillis();
+//        System.out.println("Total execution time: " + (endTime - startTime));
+

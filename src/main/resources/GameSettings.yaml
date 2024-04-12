@@ -1,7 +1,7 @@
 ---
-IslandSize: 100
+IslandSize: 10
 residentsProperties:
-  "Wolf" : 20
+  "Wolf" : 4
   "Bear" : 0
   "Fox" : 0
   "Boa" : 0
@@ -10,7 +10,7 @@ residentsProperties:
   "Deer" : 1
   "Horse" : 0
   "Duck" : 0
-  "Rabbit" : 100
+  "Rabbit" : 20
   "Goat" : 0
   "Mouse": 0
   "Caterpillar": 0
@@ -18,6 +18,6 @@ residentsProperties:
   "Boar": 0
   "Sheep": 0
 
-  "Grass" : 50
+  "Grass" : 0
 
 

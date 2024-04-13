@@ -11,7 +11,7 @@ public class Island {
     public Island(int sizeX, int sizeY) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
-        areas = new Area[Island.sizeX][Island.sizeY];
+        areas = new Area[sizeX][sizeY];
         createAreas();
     }
 
@@ -30,7 +30,7 @@ public class Island {
     private void createAreas() {
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
-                areas[i][j] = new Area(i, j);
+                areas[i][j] = new Area(new Coordinate(i, j));
 
             }
         }

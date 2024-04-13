@@ -16,9 +16,10 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameLoader {
+    private static GameSettings gameSettings = createGameSettingObject();
     public static final  String PATH_TO_ORGANISM_FOLDER = "ua.javarush.island.entity.organism.";
-    public static int IslandSize;
-    public static Map<String, Integer> residentsProperties;
+    public static int IslandSize = gameSettings.getIslandSize();;
+    public static Map<String, Integer> residentsProperties = gameSettings.getResidentsProperties();
     public static Island island;
 
 
@@ -26,13 +27,14 @@ public class GameLoader {
     public GameLoader() {
         createGameSettingObject();
         island = new Island(IslandSize, IslandSize);
-        createOrganism();
-        //createOrganism(GameLoader.PATH_TO_ORGANISM_FOLDER + "Wolf", Island.areas[0][0], 1);
+        //createOrganism();
+        createOrganism("ua.javarush.island.entity.organism.Wolf", Island.areas[0][0],1);
+
 
     }
 
-    private void createGameSettingObject() {
-        GameSettings gameSettings = null;
+    private static GameSettings createGameSettingObject() {
+
         try {
             Path pathToYamlGameSettings = Path.of("./src/main/resources/GameSettings.yaml");
             if (!Files.exists(pathToYamlGameSettings)) System.out.println("File  not exist. Object not create ");
@@ -40,14 +42,10 @@ public class GameLoader {
             ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-            gameSettings = mapper.readValue(Files.readString(pathToYamlGameSettings), GameSettings.class);
+            return mapper.readValue(Files.readString(pathToYamlGameSettings), GameSettings.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        GameLoader.IslandSize = gameSettings.getIslandSize();
-        GameLoader.residentsProperties = gameSettings.getResidentsProperties();
-
     }
 
     public void showAreas() {

@@ -10,26 +10,21 @@ import java.util.*;
 
 
 public class Area  {
-    private int coordinateX;
-    private int coordinateY;
+    private Coordinate coordinate;
     private List<Organism> residents = new ArrayList<>();
     public Map<String, Integer> listToCreateOrganism = new HashMap<>();
 
-    public int getCoordinateX() {
-        return coordinateX;
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
-    public int getCoordinateY() {
-        return coordinateY;
-    }
 
     public List<Organism> getResidents() {
         return residents;
     }
 
-    public Area(int coordinateX, int coordinateY) {
-        this.coordinateX = coordinateX;
-        this.coordinateY = coordinateY;
+    public Area(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
 
@@ -43,7 +38,7 @@ public class Area  {
                 if(organism != null) result += organism.toString();
             }
             return result;
-        } else return "[" + coordinateX + "," + coordinateY + "]  ";
+        } else return "[" + coordinate.getX() + "," + coordinate.getY() + "]  ";
     }
     public void feedOrganismOnArea(){
         for(Organism residentsOrganism : residents){
@@ -111,6 +106,10 @@ public class Area  {
             }
         }
         return numberAnimalOfThisClass;
+    }
+
+    public void removeOrganism(Organism organism){
+        residents.remove(organism);
     }
 }
 

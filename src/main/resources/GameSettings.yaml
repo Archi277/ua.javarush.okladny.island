@@ -1,16 +1,16 @@
 ---
 IslandSize: 10
 residentsProperties:
-  "Wolf" : 12
+  "Wolf" : 1
   "Bear" : 0
   "Fox" : 0
   "Boa" : 0
   "Eagle" : 0
 
-  "Deer" : 1
+  "Deer" : 0
   "Horse" : 0
   "Duck" : 0
-  "Rabbit" : 60
+  "Rabbit" : 0
   "Goat" : 0
   "Mouse": 0
   "Caterpillar": 0

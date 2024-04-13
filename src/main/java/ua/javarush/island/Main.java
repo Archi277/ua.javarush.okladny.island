@@ -19,7 +19,17 @@ public class Main {
         GameLoader gameLoader = new GameLoader();
         ListOfTaskCreator listOfTaskCreator = new ListOfTaskCreator();
 
-        methodWithExetorService(gameLoader, listOfTaskCreator);
+        //methodWithExetorService(gameLoader, listOfTaskCreator);
+
+        final long startTime = System.currentTimeMillis();
+        for (int i = 0; i < 50; i++) {
+            //methodBasedOnList(gameLoader, i);
+
+            methodBasedOnArea(gameLoader, i);
+            //Thread.sleep(500);
+        }
+        final long endTime = System.currentTimeMillis();
+        System.out.println("Total execution time: " + (endTime - startTime));
     }
 
 
@@ -32,11 +42,15 @@ public class Main {
             GameStatus.collectStatisticOfAnimals();
             gameLoader.showAreas();
 
-            executorService.invokeAll(listOfTaskCreator.taskReproduceList);
-            executorService.invokeAll(listOfTaskCreator.taskCreateList);
-            executorService.invokeAll(listOfTaskCreator.taskFeedList);
+            //executorService.invokeAll(listOfTaskCreator.taskReproduceList);
+            //TODO realize wait
+            //TODO realize LOCK in Area
+            //
+            //executorService.invokeAll(listOfTaskCreator.taskCreateList);
+            //executorService.invokeAll(listOfTaskCreator.taskFeedList);
             executorService.invokeAll(listOfTaskCreator.taskMoveList);
             executorService.invokeAll(listOfTaskCreator.taskChecksList);
+
         }
 
 
@@ -66,23 +80,23 @@ public class Main {
         GameStatus.collectStatisticOfAnimals();
         gameLoader.showAreas();
 
-        for (int k = 0; k < Island.getSizeX(); k++) {
-            for (int j = 0; j < Island.getSizeY(); j++) {
-                Island.getAreas()[k][j].reproduceOrganismOnArea();
-            }
-        }
+//        for (int k = 0; k < Island.getSizeX(); k++) {
+//            for (int j = 0; j < Island.getSizeY(); j++) {
+//                Island.getAreas()[k][j].reproduceOrganismOnArea();
+//            }
+//        }
 
-        for (int k = 0; k < Island.getSizeX(); k++) {
-            for (int j = 0; j < Island.getSizeY(); j++) {
-                Island.getAreas()[k][j].createNewOrganismOnArea();
-            }
-        }
-
-        for (int k = 0; k < Island.getSizeX(); k++) {
-            for (int j = 0; j < Island.getSizeY(); j++) {
-                Island.getAreas()[k][j].feedOrganismOnArea();
-            }
-        }
+//        for (int k = 0; k < Island.getSizeX(); k++) {
+//            for (int j = 0; j < Island.getSizeY(); j++) {
+//                Island.getAreas()[k][j].createNewOrganismOnArea();
+//            }
+//        }
+//
+//        for (int k = 0; k < Island.getSizeX(); k++) {
+//            for (int j = 0; j < Island.getSizeY(); j++) {
+//                Island.getAreas()[k][j].feedOrganismOnArea();
+//            }
+//        }
 
         for (int k = 0; k < Island.getSizeX(); k++) {
             for (int j = 0; j < Island.getSizeY(); j++) {
@@ -100,13 +114,5 @@ public class Main {
 
 }
 
-//        final long startTime = System.currentTimeMillis();
-//        for (int i = 0; i < 50; i++) {
-//            //methodBasedOnList(gameLoader, i);
-//
-//            methodBasedOnArea(gameLoader, i);
-//            //Thread.sleep(500);
-//        }
-//        final long endTime = System.currentTimeMillis();
-//        System.out.println("Total execution time: " + (endTime - startTime));
+
 

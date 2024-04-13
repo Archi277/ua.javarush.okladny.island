@@ -2,10 +2,13 @@ package ua.javarush.island.entity;
 
 import ua.javarush.island.entity.Organism;
 import ua.javarush.island.gameisland.Area;
+import ua.javarush.island.gameisland.Coordinate;
+import ua.javarush.island.gameisland.Direction;
 import ua.javarush.island.gameisland.Island;
 
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.SplittableRandom;
 
 public abstract class Animal extends Organism {
@@ -29,44 +32,62 @@ public abstract class Animal extends Organism {
 
     public void move() {
         SplittableRandom random = new SplittableRandom();
-        int newCoordinateY, newCoordinateX;
 
-        int randomDir = random.nextInt(0, 9 + 1);
-        if (randomDir > 5) {
-            int randomX = random.nextInt(-speedOfMove, speedOfMove + 1);
-            newCoordinateX = currentArea.getCoordinateX() + randomX;
-            newCoordinateY = currentArea.getCoordinateY();
-        } else {
-            int randomY = random.nextInt(-speedOfMove, speedOfMove + 1);
-            newCoordinateY = currentArea.getCoordinateY() + randomY;
-            newCoordinateX = currentArea.getCoordinateX();
-        }
+        Coordinate newCoordinate = currentArea.getCoordinate();
 
-        if (newCoordinateX > Island.getSizeX() - 1) {
-            newCoordinateX = newCoordinateX - Island.getSizeX() - 1;
-        }
-        if (newCoordinateY > Island.getSizeY() - 1) {
-            newCoordinateY = newCoordinateY - Island.getSizeY() - 1;
-        }
-        if (newCoordinateX < 0) {
-            newCoordinateX = (Island.getSizeX() - 1 - newCoordinateX);
-        }
-        if (newCoordinateY < 0) {
-            newCoordinateY = (Island.getSizeY() - 1 - newCoordinateY);
-        }
-        if (newCoordinateX >= Island.getSizeX()) {
-            newCoordinateX = Island.getSizeX() - 1;
-        }
-        if (newCoordinateY >= Island.getSizeY()) {
-            newCoordinateY = Island.getSizeY() - 1;
-        }
+        Direction direction = choseDirection(random);
 
-        Island.areas[currentArea.getCoordinateX()][currentArea.getCoordinateY()].getResidents().remove(this);
+        int randomAxisValue = random.nextInt(-speedOfMove, speedOfMove + 1);
 
-        currentArea = Island.areas[newCoordinateX][newCoordinateY];
+        if (direction == Direction.Horizontal) {
+
+            int newAxisValue = newCoordinate.getX() + randomAxisValue;
+            newCoordinate.setX(correctionCoordinate(newAxisValue, direction));
+
+        }
+        if (direction == Direction.Vertical) {
+
+            int newAxisValue = newCoordinate.getY() + randomAxisValue;
+            newCoordinate.setY(correctionCoordinate(newAxisValue, direction));
+        }
+        Area newArea = Island.areas[newCoordinate.getX()][newCoordinate.getY()];
+       // Island.areas[currentArea.getCoordinate().getX()][currentArea.getCoordinate().getY()].getResidents().remove(this);
+        currentArea.removeOrganism(this);
+
+        currentArea = newArea;
+
         currentArea.getResidents().add(this);
         //TODO add check max animal on area
 
+    }
+
+    private int correctionCoordinate(int newCoordinateValue, Direction direction) {
+        if(direction == Direction.Horizontal) {
+            if (newCoordinateValue > Island.getSizeX() - 1) {
+                return  0;
+            } else if (newCoordinateValue < 0) {
+                return  Island.getSizeX() - 1;
+            }
+            return newCoordinateValue;
+        }
+
+
+        if (direction == Direction.Vertical) {
+            if (newCoordinateValue > Island.getSizeY() - 1) {
+                return  0;
+            } else if (newCoordinateValue < 0) {
+                return  Island.getSizeY() - 1;
+            }
+            return newCoordinateValue;
+        }
+        return newCoordinateValue;
+    }
+
+    private Direction choseDirection(SplittableRandom random){
+        int randomDir = random.nextInt(0, 9 + 1);
+        if (randomDir > 5) {
+            return  Direction.Horizontal;
+        } else return Direction.Vertical;
     }
 
 
@@ -89,5 +110,22 @@ public abstract class Animal extends Organism {
         SplittableRandom random = new SplittableRandom();
         if (random.nextInt(1, 101) <= getChanceToReproduce()) return true;
         else return false;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        Animal animal = (Animal) object;
+        return Objects.equals(getID(), animal.getID());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getID());
     }
 }

@@ -14,7 +14,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class OrganismFactory {
 
     public static final  String PATH_TO_ORGANISM_FOLDER = "ua.javarush.island.entity.organism.";
-
     public static final  String PATH_TO_YAML_FOLDER = "./src/main/resources/";
 
     public static void createOrganism(Map<String, Integer> residentsProperties) {
@@ -31,7 +30,7 @@ public class OrganismFactory {
                         System.out.println("File " + name + ".YAML not exist. Object not create ");
                     }
 
-                    Class organismClass = Class.forName(fullNameClass);
+                    Class<?> organismClass = Class.forName(fullNameClass);
 
                     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
                     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -60,7 +59,7 @@ public class OrganismFactory {
                 System.out.println("File " + shortName + ".YAML not exist. Object not create ");
             }
 
-            Class organismClass = Class.forName(fullNameClass);
+            Class<?> organismClass = Class.forName(fullNameClass);
 
             ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -76,7 +75,6 @@ public class OrganismFactory {
             throw new RuntimeException(e);
         }
     }
-
 
     public static String getShortNameClassFromFullName(String fullNameClass) {
         String[] words = fullNameClass.split("\\.");

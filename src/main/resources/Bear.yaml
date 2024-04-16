@@ -1,0 +1,20 @@
+---
+chanceToReproduce: 40
+maxOrganismOnArea: 5
+numberOfReproduceTime: 2
+speedOfMove: 2
+foodWeigthForSaturation: 80
+startWeigth: 500
+currentWeigth: 500
+health: 100
+listOfEatableOrganism:
+  "Boa" : 80
+  "Deer" : 80
+  "Horse" : 40
+  "Rabbit" : 80
+  "Mouse" : 90
+  "Goat" : 70
+  "Duck" : 40
+  "Boar" : 50
+  "Buffalo" : 20
+  "Sheep": 70

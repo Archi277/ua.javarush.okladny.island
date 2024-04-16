@@ -1,13 +1,9 @@
 package ua.javarush.island.entity;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import ua.javarush.island.gameisland.Area;
 import ua.javarush.island.gameisland.Coordinate;
 import ua.javarush.island.gameisland.Direction;
 import ua.javarush.island.gameisland.Island;
-
-
 import java.util.Map;
 import java.util.SplittableRandom;
 import java.util.concurrent.TimeUnit;
@@ -37,14 +33,9 @@ public abstract class Animal extends Organism {
         this.foodWeigthForSaturation = foodWeigthForSaturation;
     }
 
-    public void setCurrentFoodWeigthForSaturation(int currentFoodWeigthForSaturation) {
-        this.currentFoodWeigthForSaturation = currentFoodWeigthForSaturation;
-    }
-
     public void setListOfEatableOrganism(Map<String, Integer> listOfEatableOrganism) {
         this.listOfEatableOrganism = listOfEatableOrganism;
     }
-
 
     public void move() {
 
@@ -87,7 +78,7 @@ public abstract class Animal extends Organism {
 
         try {
             if (desiredArea.getNumberOrganismOfThisClass(this) < maxOrganismOnArea) {
-                if (lockTo.tryLock(20, TimeUnit.MILLISECONDS)) {
+                if (lockTo.tryLock(40, TimeUnit.MILLISECONDS)) {
                     try {
                         isMoved = true;
                         currentArea.removeOrganism(this);
@@ -135,15 +126,11 @@ public abstract class Animal extends Organism {
     public boolean getChanceToEat(String name) {
         SplittableRandom random = new SplittableRandom();
         int probabilityEatable = listOfEatableOrganism.get(name);
-        if (random.nextInt(1, 101) <= probabilityEatable) return true;
-        else return false;
+        return random.nextInt(1, 101) <= probabilityEatable;
     }
 
     public boolean getReproduceProbability() {
         SplittableRandom random = new SplittableRandom();
-        if (random.nextInt(1, 101) <= getChanceToReproduce()) return true;
-        else return false;
+        return random.nextInt(1, 101) <= getChanceToReproduce();
     }
-
-
 }

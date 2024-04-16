@@ -13,7 +13,8 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class Island {
-    private static GameSettings gameSettings = createGameSettingObject();
+
+    private final static GameSettings gameSettings = createGameSettingObject();
     private static int sizeX;
     private static int sizeY;
     public  static Area[][] areas;
@@ -25,16 +26,14 @@ public class Island {
 
         createGameSettingObject();
 
-        this.sizeX = gameSettings.getIslandSizeX();
-        this.sizeY = gameSettings.getIslandSizeY();
+        sizeX = gameSettings.getIslandSizeX();
+        sizeY = gameSettings.getIslandSizeY();
 
         areas = new Area[sizeX][sizeY];
 
         createAreas();
 
         OrganismFactory.createOrganism(gameSettings.getResidentsProperties());
-//        OrganismFactory.createOrganism("ua.javarush.island.entity.organism." + "Grass", areas[0][0], 5);
-//        OrganismFactory.createOrganism("ua.javarush.island.entity.organism." + "Rabbit", areas[0][0], 5);
     }
 
     public static int getSizeX() {
@@ -53,25 +52,11 @@ public class Island {
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 areas[i][j] = new Area(new Coordinate(i, j));
-
             }
         }
-    }
-
-    public static void showAreas() {
-        System.out.println("=".repeat(150));
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                System.out.print(areas[i][j]);
-            }
-            System.out.println();
-            System.out.println();
-        }
-        System.out.println("=".repeat(150));
     }
 
     private static GameSettings createGameSettingObject() {
-
         try {
             Path pathToYamlGameSettings = Path.of("./src/main/resources/GameSettings.yaml");
             if (!Files.exists(pathToYamlGameSettings)) System.out.println("File  not exist. Object not create ");
@@ -111,57 +96,9 @@ public class Island {
             System.out.println(statisticOfResidents);
 
         }
-
     }
 
-    public void live(int days){
-        final long startTime = System.currentTimeMillis();
-        for (int i = 0; i < days; i++) {
-            //methodBasedOnList(gameLoader, i);
-
-            methodBasedOnArea( i);
-            //Thread.sleep(500);
-        }
-        final long endTime = System.currentTimeMillis();
-        System.out.println("Total execution time: " + (endTime - startTime));
-    }
-    private  void methodBasedOnArea( int i) {
-        System.out.println("Day #: "  + i);
-        collectStatistic();
-        showAreas();
-
-        for (int k = 0; k < Island.getSizeX(); k++) {
-            for (int j = 0; j < Island.getSizeY(); j++) {
-                Island.getAreas()[k][j].reproduceOrganismOnArea();
-            }
-        }
-
-        for (int k = 0; k < Island.getSizeX(); k++) {
-            for (int j = 0; j < Island.getSizeY(); j++) {
-                Island.getAreas()[k][j].createNewOrganismOnArea();
-            }
-        }
-
-        for (int k = 0; k < Island.getSizeX(); k++) {
-            for (int j = 0; j < Island.getSizeY(); j++) {
-                Island.getAreas()[k][j].feedOrganismOnArea();
-            }
-        }
-
-        for (int k = 0; k < Island.getSizeX(); k++) {
-            for (int j = 0; j < Island.getSizeY(); j++) {
-                Island.getAreas()[k][j].moveOrganismOnArea();
-
-            }
-        }
-
-        for (int k = 0; k < Island.getSizeX(); k++) {
-            for (int j = 0; j < Island.getSizeY(); j++) {
-                Island.getAreas()[k][j].checkAliveAnimalsOnArea();
-            }
-        }
-    }
-    public  void live2(int days) throws InterruptedException {
+    public  void live(int days) throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(8);
         ListOfTaskCreator listOfTaskCreator = new ListOfTaskCreator();
 
@@ -169,12 +106,7 @@ public class Island {
 
         for (int i=1;i<days+1;i++) {
 
-            //collectStatisticOfAnimals();
-            //showAreas();
-
-            List<Future<Void>> taskReproduceResult = executorService.invokeAll(listOfTaskCreator.taskReproduceList);
-            //while (!taskReproduceResult.stream().allMatch(o-> o.isDone())) {}
-
+            executorService.invokeAll(listOfTaskCreator.taskReproduceList);
             executorService.invokeAll(listOfTaskCreator.taskCreateList);
             executorService.invokeAll(listOfTaskCreator.taskFeedList);
             executorService.invokeAll(listOfTaskCreator.taskMoveList);
@@ -185,16 +117,11 @@ public class Island {
             System.out.println("*".repeat(50));
             System.out.println("After day #: "  + i);
             collectStatistic();
-//
 
-            //Thread.sleep(100);
         }
-
-
         final long endTime = System.currentTimeMillis();
         System.out.println("Total execution time: " + (endTime - startTime));
 
         executorService.shutdown();
     }
-
 }

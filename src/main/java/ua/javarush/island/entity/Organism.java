@@ -1,10 +1,6 @@
 package ua.javarush.island.entity;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import ua.javarush.island.gameisland.Area;
-
-import java.util.Map;
 import java.util.Objects;
 
 public abstract class Organism {
@@ -20,9 +16,10 @@ public abstract class Organism {
     protected int health;
 
     public  abstract  void reproduce();
-    public  abstract  void move();
-    public  abstract  void eat();
 
+    public  abstract  void move();
+
+    public  abstract  void eat();
 
     public String getID() {
         return ID;
@@ -96,5 +93,4 @@ public abstract class Organism {
     public int hashCode() {
         return Objects.hash(getID());
     }
-
 }

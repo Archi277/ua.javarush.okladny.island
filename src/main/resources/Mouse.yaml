@@ -1,0 +1,12 @@
+---
+maxOrganismOnArea: 500
+chanceToReproduce: 20
+numberOfReproduceTime: 3
+speedOfMove: 1
+foodWeigthForSaturation: 1
+startWeigth: 1
+currentWeigth: 1
+health: 100
+listOfEatableOrganism:
+  "Grass" : 100
+  "Caterpillar": 100

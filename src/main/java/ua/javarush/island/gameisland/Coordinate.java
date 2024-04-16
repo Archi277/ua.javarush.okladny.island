@@ -1,6 +1,7 @@
 package ua.javarush.island.gameisland;
 
 public class Coordinate {
+
     private int X;
     private int Y;
 

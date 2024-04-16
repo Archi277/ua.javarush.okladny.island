@@ -1,0 +1,11 @@
+---
+maxOrganismOnArea: 20
+chanceToReproduce: 10
+numberOfReproduceTime: 2
+speedOfMove: 4
+foodWeigthForSaturation: 60
+startWeigth: 400
+currentWeigth: 400
+health: 100
+listOfEatableOrganism:
+  "Grass" : 100

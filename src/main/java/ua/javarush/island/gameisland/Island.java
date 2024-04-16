@@ -98,13 +98,13 @@ public class Island {
         }
     }
 
-    public  void live(int days) throws InterruptedException {
+    public  void live() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(8);
         ListOfTaskCreator listOfTaskCreator = new ListOfTaskCreator();
 
         final long startTime = System.currentTimeMillis();
 
-        for (int i=1;i<days+1;i++) {
+        for (int i=1;i< gameSettings.getDaysOfSimulation()+1;i++) {
 
             executorService.invokeAll(listOfTaskCreator.taskReproduceList);
             executorService.invokeAll(listOfTaskCreator.taskCreateList);

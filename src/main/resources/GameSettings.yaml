@@ -1,4 +1,5 @@
 ---
+DaysOfSimulation : 50
 IslandSizeX: 100
 IslandSizeY: 20
 residentsProperties:

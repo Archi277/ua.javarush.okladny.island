@@ -1,5 +1,5 @@
 ---
-chanceToReproduce: 40
+chanceToReproduce: 20
 maxOrganismOnArea: 30
 numberOfReproduceTime: 3
 speedOfMove: 3

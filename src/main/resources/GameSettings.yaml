@@ -2,16 +2,16 @@
 IslandSizeX: 100
 IslandSizeY: 20
 residentsProperties:
-  "Wolf" : 150
-  "Bear" : 150
-  "Fox" : 150
-  "Boa" : 150
-  "Eagle" : 150
+  "Wolf" : 50
+  "Bear" : 50
+  "Fox" : 50
+  "Boa" : 50
+  "Eagle" : 50
 
-  "Deer" : 150
-  "Horse" : 150
-  "Duck" : 150
-  "Rabbit" : 150
+  "Deer" : 350
+  "Horse" : 350
+  "Duck" : 350
+  "Rabbit" : 350
   "Goat" : 150
   "Mouse": 150
   "Caterpillar": 150
@@ -19,6 +19,4 @@ residentsProperties:
   "Boar": 150
   "Sheep": 150
 
-  "Grass" : 500
-
-
+  "Grass" : 400

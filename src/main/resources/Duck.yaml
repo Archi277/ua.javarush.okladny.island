@@ -1,6 +1,6 @@
 ---
 maxOrganismOnArea: 200
-chanceToReproduce: 10
+chanceToReproduce: 30
 numberOfReproduceTime: 5
 speedOfMove: 4
 foodWeigthForSaturation: 1

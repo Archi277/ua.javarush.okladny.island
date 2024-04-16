@@ -1,7 +1,7 @@
 ---
 maxOrganismOnArea: 10
-chanceToReproduce: 10
-numberOfReproduceTime: 2
+chanceToReproduce: 20
+numberOfReproduceTime: 3
 speedOfMove: 3
 foodWeigthForSaturation: 100
 startWeigth: 700

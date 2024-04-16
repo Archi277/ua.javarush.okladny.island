@@ -4,7 +4,7 @@ import ua.javarush.island.gameisland.Area;
 
 import java.util.concurrent.Callable;
 
-public class TaskCheck implements Callable<Void>, Runnable{
+public class TaskCheck implements Callable<Void> {
     private Area area;
 
     public TaskCheck(Area area) {
@@ -13,12 +13,8 @@ public class TaskCheck implements Callable<Void>, Runnable{
 
     @Override
     public Void call() throws Exception {
+
         area.checkAliveAnimalsOnArea();
         return null;
-    }
-
-    @Override
-    public void run() {
-        area.checkAliveAnimalsOnArea();
     }
 }

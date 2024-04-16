@@ -2,7 +2,9 @@ package ua.javarush.island.entity.organism;
 
 import ua.javarush.island.entity.Animal;
 import ua.javarush.island.entity.Organism;
-import ua.javarush.island.gameloader.GameLoader;
+import ua.javarush.island.gameisland.OrganismFactory;
+
+import java.util.NoSuchElementException;
 
 public class Predator extends Animal {
     @Override
@@ -12,61 +14,92 @@ public class Predator extends Animal {
             String name = organism.getClass().getSimpleName();
 
 
-            if (listOfEatableOrganism.containsKey(name)) {
-                System.out.println(this.getClass().getSimpleName() + " find " + name);
+            if (listOfEatableOrganism.containsKey(name) && getChanceToEat(name)) {
 
-                if (getChanceToEat(name)) {
-                    isFoodFind = true;
-                    System.out.println(this.getClass().getSimpleName() + "eat" + name);
+                //TODO delete this after test
+//                System.out.println(this.getClass().getSimpleName() + " find " + name);
+//                System.out.println(this.getClass().getSimpleName() + "eat" + name);
 
-                    if (organism.health != 0) {
-                        if (organism.getStartWeigth() > foodWeigthForSaturation) {
-                            currentFoodWeigthForSaturation = foodWeigthForSaturation;
-                            organism.setHealth(0);
-                            break;
+                isFoodFind = true;
 
-                        } else if (organism.getStartWeigth() < foodWeigthForSaturation) {
-                            currentFoodWeigthForSaturation += organism.getStartWeigth();
-                            organism.setHealth(0);
-                        }
+                if (organism.getHealth() != 0) {
+                    if (organism.getStartWeigth() > foodWeigthForSaturation) {
+                        currentFoodWeigthForSaturation = foodWeigthForSaturation;
+                        organism.setHealth(0);
+                        break;
+
+                    } else if (organism.getStartWeigth() < foodWeigthForSaturation) {
+                        currentFoodWeigthForSaturation += organism.getStartWeigth();
+                        organism.setHealth(0);
                     }
                 }
+
             }
         }
-        if(!isFoodFind) {
-            setHealth( getHealth() - 1);
+        if (!isFoodFind) {
+            setHealth(getHealth() - 1);
         }
     }
+
     @Override
     public void reproduce() {
-        for (Organism organism : currentArea.getResidents()) {
 
-            String organismName = organism.getClass().getSimpleName();
-            String thisName = this.getClass().getSimpleName();
+        if (currentArea.getNumberOrganismOfThisClass(this) < maxOrganismOnArea && !this.isHavePair && this.getNumberOfReproduceTime() > 0) {
 
+            Organism desiredOrganism;
 
-            if (!isHavePair) {
-                if (currentArea.getNumberAnimalOfThisClass(this) < maxOrganismOnArea) {
-                    if (!organism.equals(this)) {
-                        if (organismName.equals(thisName)) {
-                            if(organism.getNumberOfReproduceTime() > 0) {
-                                if (getReproduceProbability()) {
-                                    this.isHavePair =true;
-                                    organism.isHavePair = true;
+            try {
+                desiredOrganism = currentArea.getResidents().stream()
+                        .filter(o -> !o.equals(this))
+                        .filter(o -> (o.getClass().getSimpleName()).equals(this.getClass().getSimpleName()))
+                        .filter(o -> o.getNumberOfReproduceTime() > 0)
+                        .filter(o -> getReproduceProbability())
+                        .findAny().get();
 
-                                    System.out.println(thisName+ " " + this.getID() + " find  pair to reproduce " + organismName + organism.getID());
+                //TODO delete this after test
+                String thisName = this.getClass().getSimpleName();
+                String organismName = desiredOrganism.getClass().getSimpleName();
 
-                                    organism.setNumberOfReproduceTime(organism.getNumberOfReproduceTime() - 1);
-                                    this.setNumberOfReproduceTime(getNumberOfReproduceTime() - 1);
+                this.isHavePair = true;
+                desiredOrganism.setHavePair(true);
 
-                                    getCurrentArea().listToCreateOrganism.merge(GameLoader.PATH_TO_ORGANISM_FOLDER + thisName, 1, Integer::sum);
-                                }
-                            }
-                        }
-                    }
-                }
+//              System.out.println(thisName + " " + this.getID() + " find  pair to reproduce " + organismName + desiredOrganism.getID());
+
+                desiredOrganism.setNumberOfReproduceTime(desiredOrganism.getNumberOfReproduceTime() - 1);
+                this.setNumberOfReproduceTime(getNumberOfReproduceTime() - 1);
+
+                getCurrentArea().getListToCreateOrganism().merge(OrganismFactory.PATH_TO_ORGANISM_FOLDER + thisName, 1, Integer::sum);
+
+            } catch (NoSuchElementException e) {
+                setHavePair(false);
             }
         }
-        isHavePair = false;
+
+//        for (Organism organism : currentArea.getResidents()) {
+//
+//            String organismName = organism.getClass().getSimpleName();
+//            String thisName = this.getClass().getSimpleName();
+//
+//            if (!isHavePair && organismName.equals(thisName) && !organism.equals(this) && organism.getNumberOfReproduceTime() > 0) {
+//
+//                if (currentArea.getNumberAnimalOfThisClass(this) < maxOrganismOnArea) {
+//
+//                    if (getReproduceProbability()) {
+//
+//                        isHavePair = true;
+//                        organism.setHavePair(true);
+//
+//                        //TODO delete this after test
+//                        System.out.println(thisName + " " + this.getID() + " find  pair to reproduce " + organismName + organism.getID());
+//
+//                        organism.setNumberOfReproduceTime(organism.getNumberOfReproduceTime() - 1);
+//                        setNumberOfReproduceTime(getNumberOfReproduceTime() - 1);
+//
+//                        getCurrentArea().listToCreateOrganism.merge(GameLoader.PATH_TO_ORGANISM_FOLDER + thisName, 1, Integer::sum);
+//                    }
+//                }
+//            }
+//        }
+//        isHavePair = false;
     }
 }

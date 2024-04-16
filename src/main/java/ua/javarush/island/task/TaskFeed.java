@@ -4,7 +4,7 @@ import ua.javarush.island.gameisland.Area;
 
 import java.util.concurrent.Callable;
 
-public class TaskFeed implements Callable<Void>,Runnable{
+public class TaskFeed implements Callable<Void>{
     private Area area;
 
     public TaskFeed(Area area) {
@@ -16,9 +16,5 @@ public class TaskFeed implements Callable<Void>,Runnable{
         area.feedOrganismOnArea();
         return null;
     }
-
-    @Override
-    public void run() {
-        area.feedOrganismOnArea();
-    }
 }
+

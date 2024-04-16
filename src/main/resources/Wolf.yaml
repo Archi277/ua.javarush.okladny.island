@@ -1,8 +1,7 @@
 ---
-isPredator : true
-chanceToReproduce: 20
+chanceToReproduce: 40
 maxOrganismOnArea: 30
-numberOfReproduceTime: 1
+numberOfReproduceTime: 3
 speedOfMove: 3
 foodWeigthForSaturation: 8
 startWeigth: 50

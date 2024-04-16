@@ -10,4 +10,6 @@ public class Wolf extends Predator {
         return "[\uD83D\uDC3A"+getID()+"]["+getHealth()+"]  ";
     }
 
+
+
 }

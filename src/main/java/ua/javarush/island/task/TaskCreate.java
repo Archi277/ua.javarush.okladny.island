@@ -4,7 +4,7 @@ import ua.javarush.island.gameisland.Area;
 
 import java.util.concurrent.Callable;
 
-public class TaskCreate implements Callable<Void>,Runnable {
+public class TaskCreate implements Callable<Void> {
     private Area area;
 
     public TaskCreate(Area area) {
@@ -15,10 +15,5 @@ public class TaskCreate implements Callable<Void>,Runnable {
     public Void call() throws Exception {
         area.createNewOrganismOnArea();
         return null;
-    }
-
-    @Override
-    public void run() {
-        area.createNewOrganismOnArea();
     }
 }

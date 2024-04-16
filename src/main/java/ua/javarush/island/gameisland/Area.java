@@ -1,33 +1,39 @@
 package ua.javarush.island.gameisland;
 
-import ua.javarush.island.entity.Animal;
 import ua.javarush.island.entity.Organism;
-import ua.javarush.island.entity.Plant;
-import ua.javarush.island.gameloader.GameLoader;
-import ua.javarush.island.gameloader.GameStatus;
 
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.Lock;
+import java.util.stream.Collectors;
 
 
-public class Area  {
-    private Coordinate coordinate;
+public class Area {
+    private final Coordinate coordinate;
     private List<Organism> residents = new ArrayList<>();
-    public Map<String, Integer> listToCreateOrganism = new HashMap<>();
+    private Map<String, Integer> listToCreateOrganism = new HashMap<>();
 
-    public Coordinate getCoordinate() {
-        return coordinate;
-    }
-
-
-    public List<Organism> getResidents() {
-        return residents;
-    }
+    private Lock lock = new ReentrantLock();
 
     public Area(Coordinate coordinate) {
         this.coordinate = coordinate;
     }
 
+    public Map<String, Integer> getListToCreateOrganism() {
+        return listToCreateOrganism;
+    }
 
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public List<Organism> getResidents() {
+        return residents;
+    }
+
+    public Lock getLock(){
+        return this.lock;
+    }
 
     @Override
     public String toString() {
@@ -35,80 +41,78 @@ public class Area  {
         if (residents.size() != 0) {
             String result = "";
             for (Organism organism : residents) {
-                if(organism != null) result += organism.toString();
+                if (organism != null) result += organism.toString();
             }
             return result;
         } else return "[" + coordinate.getX() + "," + coordinate.getY() + "]  ";
     }
-    public void feedOrganismOnArea(){
-        for(Organism residentsOrganism : residents){
-            if (residentsOrganism instanceof Animal) {
-                Animal animal = (Animal) residentsOrganism;
-                animal.eat();
-            }
-        }
-    }
-    public void reproduceOrganismOnArea(){
-        for(Organism residentsOrganism : residents){
-            residentsOrganism.reproduce();
-        }
-    }
 
-    public void moveOrganismOnArea(){
+    public void feedOrganismOnArea() {
 
         List<Organism> residentsCopy = List.copyOf(residents);
-        for(Organism residentsOrganism : residentsCopy){
-            if (residentsOrganism instanceof Animal) {
-                Animal animal = (Animal) residentsOrganism;
-                animal.move();
-            }
-        }
+        residentsCopy.forEach(organism -> organism.eat());
+    }
+
+    public void reproduceOrganismOnArea() {
+
+        residents.forEach(organism -> organism.reproduce());
+
+    }
+
+    public void moveOrganismOnArea() {
+
+        List<Organism> residentsCopy = List.copyOf(residents);
+        residentsCopy.forEach(organism -> organism.move());
+
+
     }
 
     public void createNewOrganismOnArea() {
-        for (Map.Entry<String, Integer> set : listToCreateOrganism.entrySet()) {
-            String classOrganismName = set.getKey();
-            int quantityOrganism = set.getValue();
-            for (int j = 0; j < quantityOrganism; j++) {
-                GameLoader.createOrganism(classOrganismName, this, 1);
-            }
-        }
+
+        listToCreateOrganism.forEach((className, quantity) -> OrganismFactory.createOrganism(className, this, quantity));
+        listToCreateOrganism.forEach((className, quantity) -> Island.newbornStatistics.merge(OrganismFactory.getShortNameClassFromFullName(className), quantity,Integer::sum));
         listToCreateOrganism.clear();
     }
-    public  void checkAliveAnimalsOnArea() {
-        Iterator<Organism> organismIterator = residents.iterator();
-        while (organismIterator.hasNext()) {
 
-            Organism nextOrganism = organismIterator.next();
-            if (nextOrganism instanceof Animal) {
-                Animal animal = (Animal) nextOrganism;
-                if (animal.getHealth() < 10 ) {
-                    GameStatus.aliveOrganism.remove(animal);
-                    organismIterator.remove();
-                }
+    public void checkAliveAnimalsOnArea() {
 
-            }
-            if (nextOrganism instanceof Plant) {
-                if (nextOrganism.getCurrentWeigth() <= nextOrganism.getStartWeigth() / 10) {
-                    GameStatus.aliveOrganism.remove(nextOrganism);
-                    organismIterator.remove();
-                }
-            }
-        }
+        List<Organism> residentsCopy = List.copyOf(residents);
+        residentsCopy.stream().filter(o -> o.getHealth() < 10).peek(this::removeOrganism).peek(o -> {
+            Island.aliveOrganism.remove(o);
+            Island.deathStatistics.merge(o.getClass().getSimpleName(), 1, Integer::sum);
+        }).collect(Collectors.toList());
+
+        //TODO delete this after test
+
+//        Iterator<Organism> organismIterator = residents.iterator();
+//        while (organismIterator.hasNext()) {
+//
+//            Organism nextOrganism = organismIterator.next();
+//            if (nextOrganism instanceof Animal) {
+//                Animal animal = (Animal) nextOrganism;
+//
+//                if (animal.getHealth() < 10 ) {
+//                    GameStatus.aliveOrganism.remove(animal);
+//                    organismIterator.remove();
+//                }
+//
+//            }
+//            if (nextOrganism instanceof Plant) {
+//                if (nextOrganism.getCurrentWeigth() <= nextOrganism.getStartWeigth() / 10) {
+//                    GameStatus.aliveOrganism.remove(nextOrganism);
+//                    organismIterator.remove();
+//                }
+//            }
+//        }
     }
 
-    public int getNumberAnimalOfThisClass(Organism organism){
-        int numberAnimalOfThisClass= 0;
-        String targetNameOrganism = organism.getClass().getTypeName();
-        for(Organism residentsOrganism : residents){
-            if(residentsOrganism.getClass().getTypeName().equals(targetNameOrganism)){
-                numberAnimalOfThisClass++;
-            }
-        }
-        return numberAnimalOfThisClass;
+    public int getNumberOrganismOfThisClass(Organism organism) {
+
+        return (int) residents.stream().filter(o -> o.getClass().getTypeName().equals(organism)).count();
+
     }
 
-    public void removeOrganism(Organism organism){
+    public void removeOrganism(Organism organism) {
         residents.remove(organism);
     }
 }

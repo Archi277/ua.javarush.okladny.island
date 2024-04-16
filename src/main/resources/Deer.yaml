@@ -1,4 +1,4 @@
-isPredator : false
+---
 maxOrganismOnArea: 20
 chanceToReproduce: 30
 numberOfReproduceTime: 1

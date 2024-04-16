@@ -1,0 +1,23 @@
+---
+DaysOfSimulation : 50
+IslandSizeX: 100
+IslandSizeY: 20
+residentsProperties:
+  "Wolf" : 50
+  "Bear" : 50
+  "Fox" : 50
+  "Boa" : 50
+  "Eagle" : 50
+
+  "Deer" : 350
+  "Horse" : 350
+  "Duck" : 350
+  "Rabbit" : 350
+  "Goat" : 150
+  "Mouse": 150
+  "Caterpillar": 150
+  "Buffalo" : 150
+  "Boar": 150
+  "Sheep": 150
+
+  "Grass" : 400

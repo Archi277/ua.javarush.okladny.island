@@ -1,0 +1,7 @@
+---
+startWeigth: 500
+maxOrganismOnArea: 2
+currentWeigth: 20
+health: 20
+chanceToReproduce: 100
+numberOfReproduceTime: 1

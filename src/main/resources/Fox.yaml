@@ -1,0 +1,14 @@
+---
+chanceToReproduce: 20
+maxOrganismOnArea: 30
+numberOfReproduceTime: 3
+speedOfMove: 2
+foodWeigthForSaturation: 2
+startWeigth: 8
+currentWeigth: 8
+health: 100
+listOfEatableOrganism:
+  "Rabbit" : 70
+  "Mouse" : 90
+  "Duck" : 60
+  "Caterpillar" : 40

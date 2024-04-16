@@ -1,0 +1,13 @@
+---
+chanceToReproduce: 40
+maxOrganismOnArea: 10
+numberOfReproduceTime: 2
+speedOfMove: 1
+foodWeigthForSaturation: 3
+startWeigth: 15
+currentWeigth: 15
+health: 100
+listOfEatableOrganism:
+  "Rabbit" : 20
+  "Mouse" : 40
+  "Fox" : 15
